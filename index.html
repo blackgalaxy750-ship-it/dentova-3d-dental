@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DENTOVA — Advanced Dental Care</title>
+
+    <meta name="description"
+          content="DENTOVA — Modern dental care powered by advanced technology.">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================================
+         LOADER
+    ================================= -->
+
+    <div class="loader">
+        <div class="loader-tooth">🦷</div>
+        <div class="loader-text">DENTOVA</div>
+    </div>
+
+
+    <!-- ================================
+         3D BACKGROUND
+    ================================= -->
+
+    <canvas id="three-canvas"></canvas>
+
+
+    <!-- ================================
+         NAVBAR
+    ================================= -->
+
+    <header class="navbar">
+
+        <a href="#home" class="logo">
+            <span class="logo-icon">✦</span>
+            DENTOVA
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#treatments">Treatments</a>
+            <a href="#technology">Technology</a>
+            <a href="#contact">Contact</a>
+
+        </nav>
+
+        <a href="#appointment" class="nav-button">
+            Book Appointment
+        </a>
+
+        <button class="menu-btn" id="menuBtn">
+            ☰
+        </button>
+
+    </header>
+
+
+    <!-- ================================
+         HERO
+    ================================= -->
+
+    <main>
+
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
+                <div class="eyebrow">
+                    MODERN DENTISTRY
+                    <span></span>
+                    ADVANCED TECHNOLOGY
+                </div>
+
+                <h1>
+                    Your Smile.
+                    <br>
+                    <span>Our Expertise.</span>
+                </h1>
+
+                <p>
+                    Experience a new generation of dental care
+                    where advanced technology meets personalized
+                    treatment.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#appointment" class="primary-btn">
+                        Book Appointment
+                        <span>→</span>
+                    </a>
+
+                    <a href="#treatments" class="secondary-btn">
+                        Explore Treatments
+                    </a>
+
+                </div>
+
+                <div class="hero-trust">
+
+                    <div class="avatars">
+                        <span>👨🏻</span>
+                        <span>👩🏻</span>
+                        <span>👨🏼</span>
+                        <span>👩🏼</span>
+                    </div>
+
+                    <div>
+                        <strong>5,000+</strong>
+                        <small>Happy Patients</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- 3D HERO OBJECT -->
+
+            <div class="hero-visual">
+
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+
+                <div class="floating-particle particle-one"></div>
+                <div class="floating-particle particle-two"></div>
+                <div class="floating-particle particle-three"></div>
+
+                <div class="tooth-container">
+
+                    <div class="tooth-glow"></div>
+
+                    <div class="tooth">
+
+                        <div class="tooth-top"></div>
+
+                        <div class="tooth-body">
+
+                            <div class="tooth-inner"></div>
+
+                        </div>
+
+                        <div class="tooth-root"></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hero-badge badge-one">
+                    <span>✦</span>
+                    Advanced Care
+                </div>
+
+                <div class="hero-badge badge-two">
+                    <span>✓</span>
+                    Trusted Experts
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             STATS
+        ================================= -->
+
+        <section class="stats-section">
+
+            <div class="stat">
+                <strong>10+</strong>
+                <span>Years Experience</span>
+            </div>
+
+            <div class="stat">
+                <strong>5K+</strong>
+                <span>Happy Patients</span>
+            </div>
+
+            <div class="stat">
+                <strong>15+</strong>
+                <span>Advanced Treatments</span>
+            </div>
+
+            <div class="stat">
+                <strong>24/7</strong>
+                <span>Patient Support</span>
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             TREATMENTS
+        ================================= -->
+
+        <section class="section treatments" id="treatments">
+
+            <div class="section-heading">
+
+                <span class="section-label">
+                    OUR TREATMENTS
+                </span>
+
+                <h2>
+                    Complete Dental Care
+                    <span>Under One Roof.</span>
+                </h2>
+
+                <p>
+                    From routine checkups to advanced procedures,
+                    we provide comprehensive dental solutions
+                    for your entire family.
+                </p>
+
+            </div>
+
+
+            <div class="treatment-grid">
+
+                <article class="treatment-card">
+
+                    <div class="card-number">01</div>
+
+                    <div class="card-icon">
+                        🦷
+                    </div>
+
+                    <h3>Dental Implants</h3>
+
+                    <p>
+                        Restore missing teeth with
+                        natural-looking permanent implants.
+                    </p>
+
+                    <a href="#appointment">
+                        Explore →
+                    </a>
+
+                </article>
+
+
+                <article class="treatment-card">
+
+                    <div class="card-number">02</div>
+
+                    <div class="card-icon">
+                        ✨
+                    </div>
+
+                    <h3>Teeth Whitening</h3>
+
+                    <p>
+                        Brighten your smile and boost
+                        your confidence.
+                    </p>
+
+                    <a href="#appointment">
+                        Explore →
+                    </a>
+
+                </article>
+
+
+                <article class="treatment-card">
+
+                    <div class="card-number">03</div>
+
+                    <div class="card-icon">
+                        😁
+                    </div>
+
+                    <h3>Smile Makeover</h3>
+
+                    <p>
+                        Create a confident smile with
+                        personalized cosmetic care.
+                    </p>
+
+                    <a href="#appointment">
+                        Explore →
+                    </a>
+
+                </article>
+
+
+                <article class="treatment-card">
+
+                    <div class="card-number">04</div>
+
+                    <div class="card-icon">
+                        🧒
+                    </div>
+
+                    <h3>Kids Dentistry</h3>
+
+                    <p>
+                        Gentle dental care designed
+                        specially for children.
+                    </p>
+
+                    <a href="#appointment">
+                        Explore →
+                    </a>
+
+                </article>
+
+
+                <article class="treatment-card">
+
+                    <div class="card-number">05</div>
+
+                    <div class="card-icon">
+                        🩺
+                    </div>
+
+                    <h3>Root Canal</h3>
+
+                    <p>
+                        Preserve your natural teeth with
+                        modern root canal treatment.
+                    </p>
+
+                    <a href="#appointment">
+                        Explore →
+                    </a>
+
+                </article>
+
+
+                <article class="treatment-card">
+
+                    <div class="card-number">06</div>
+
+                    <div class="card-icon">
+                        👑
+                    </div>
+
+                    <h3>Crowns & Bridges</h3>
+
+                    <p>
+                        Restore strength, function
+                        and natural appearance.
+                    </p>
+
+                    <a href="#appointment">
+                        Explore →
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             INSIDE TOOTH
+        ================================= -->
+
+        <section class="tooth-section" id="technology">
+
+            <div class="tooth-info">
+
+                <span class="section-label">
+                    EXPLORE
+                </span>
+
+                <h2>
+                    Inside
+                    <span>The Tooth.</span>
+                </h2>
+
+                <p>
+                    Discover the amazing structure of your tooth
+                    and learn how modern dental technology helps
+                    protect your oral health.
+                </p>
+
+                <button class="outline-btn" id="rotateTooth">
+                    Explore 3D View →
+                </button>
+
+            </div>
+
+
+            <div class="anatomy">
+
+                <div class="anatomy-tooth">
+
+                    <div class="layer enamel">
+                        <span>Enamel</span>
+                    </div>
+
+                    <div class="layer dentin">
+                        <span>Dentin</span>
+                    </div>
+
+                    <div class="layer pulp">
+                        <span>Pulp</span>
+                    </div>
+
+                    <div class="layer root">
+                        <span>Root</span>
+                    </div>
+
+                </div>
+
+                <div class="anatomy-label label-one">
+                    Enamel
+                </div>
+
+                <div class="anatomy-label label-two">
+                    Dentin
+                </div>
+
+                <div class="anatomy-label label-three">
+                    Pulp
+                </div>
+
+                <div class="anatomy-label label-four">
+                    Root
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             WHY US
+        ================================= -->
+
+        <section class="section why-us" id="about">
+
+            <div class="why-content">
+
+                <span class="section-label">
+                    WHY CHOOSE US
+                </span>
+
+                <h2>
+                    Your Trusted
+                    <span>Dental Partner.</span>
+                </h2>
+
+                <p>
+                    We combine experience, technology and
+                    patient-first care to create a comfortable
+                    dental experience.
+                </p>
+
+            </div>
+
+
+            <div class="features">
+
+                <div class="feature">
+                    <span>✦</span>
+                    <div>
+                        <h3>Advanced Equipment</h3>
+                        <p>Modern technology for precise treatment.</p>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <span>◉</span>
+                    <div>
+                        <h3>Experienced Dentists</h3>
+                        <p>Skilled professionals focused on your care.</p>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <span>♡</span>
+                    <div>
+                        <h3>Comfortable Environment</h3>
+                        <p>Relaxing and hygienic clinic atmosphere.</p>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <span>✓</span>
+                    <div>
+                        <h3>Transparent Pricing</h3>
+                        <p>Clear treatment plans with no hidden costs.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             TECHNOLOGY
+        ================================= -->
+
+        <section class="technology-section">
+
+            <div class="technology-visual">
+
+                <div class="tech-ring ring-one"></div>
+                <div class="tech-ring ring-two"></div>
+
+                <div class="scanner">
+                    <div class="scanner-light"></div>
+                    <span>3D</span>
+                </div>
+
+            </div>
+
+            <div class="technology-content">
+
+                <span class="section-label">
+                    OUR TECHNOLOGY
+                </span>
+
+                <h2>
+                    Modern Tools.
+                    <span>Better Results.</span>
+                </h2>
+
+                <p>
+                    Advanced dental technology helps us deliver
+                    precise, comfortable and efficient treatment.
+                </p>
+
+                <div class="tech-list">
+
+                    <div>
+                        <strong>01</strong>
+                        Digital X-Ray
+                    </div>
+
+                    <div>
+                        <strong>02</strong>
+                        3D Dental Scan
+                    </div>
+
+                    <div>
+                        <strong>03</strong>
+                        Laser Dentistry
+                    </div>
+
+                    <div>
+                        <strong>04</strong>
+                        CAD / CAM
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             APPOINTMENT
+        ================================= -->
+
+        <section class="appointment" id="appointment">
+
+            <div class="appointment-content">
+
+                <span class="section-label">
+                    BOOK APPOINTMENT
+                </span>
+
+                <h2>
+                    Ready for a
+                    <span>Brighter Smile?</span>
+                </h2>
+
+                <p>
+                    Take the first step toward better oral health.
+                    Schedule your consultation today.
+                </p>
+
+            </div>
+
+
+            <form class="appointment-form" id="appointmentForm">
+
+                <div class="form-row">
+
+                    <input
+                        type="text"
+                        placeholder="Full Name"
+                        required
+                    >
+
+                    <input
+                        type="tel"
+                        placeholder="Phone Number"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-row">
+
+                    <select required>
+
+                        <option value="">
+                            Select Treatment
+                        </option>
+
+                        <option>
+                            Dental Implants
+                        </option>
+
+                        <option>
+                            Teeth Whitening
+                        </option>
+
+                        <option>
+                            Smile Makeover
+                        </option>
+
+                        <option>
+                            Root Canal
+                        </option>
+
+                        <option>
+                            General Checkup
+                        </option>
+
+                    </select>
+
+                    <input
+                        type="date"
+                        required
+                    >
+
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Request Appointment →
+                </button>
+
+                <p class="form-note">
+                    We'll contact you to confirm your appointment.
+                </p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================
+         FOOTER
+    ================================= -->
+
+    <footer id="contact">
+
+        <div class="footer-brand">
+
+            <a href="#home" class="logo">
+                <span class="logo-icon">✦</span>
+                DENTOVA
+            </a>
+
+            <p>
+                Advanced dental care for healthier,
+                brighter smiles.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>Explore</h4>
+
+            <a href="#about">About</a>
+            <a href="#treatments">Treatments</a>
+            <a href="#technology">Technology</a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>Contact</h4>
+
+            <a href="tel:+919999999999">
+                +91 99999 99999
+            </a>
+
+            <a href="mailto:hello@dentova.in">
+                hello@dentova.in
+            </a>
+
+            <span>
+                Raisen, Madhya Pradesh
+            </span>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>Follow</h4>
+
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="#">Google</a>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            © 2026 DENTOVA. Demo website.
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================================
+         THREE.JS
+    ================================= -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="script.js"></script>
+
+</body>
+</html>
