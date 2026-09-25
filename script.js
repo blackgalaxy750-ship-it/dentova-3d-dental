@@ -1,5 +1,5 @@
 /* =========================================================
-   DENTOVA — ADVANCED INTERACTIVE JAVASCRIPT
+   DENTOVA — PREMIUM INTERACTIVE JAVASCRIPT
 ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("load", () => {
         setTimeout(() => {
-            if (loader) loader.classList.add("hide");
+            if (loader) {
+                loader.classList.add("hide");
+            }
         }, 900);
     });
 
@@ -25,79 +27,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const mobileMenu = document.querySelector(".mobile-menu");
 
     if (menuBtn && mobileMenu) {
+
         menuBtn.addEventListener("click", () => {
             mobileMenu.classList.toggle("active");
+            menuBtn.classList.toggle("active");
         });
 
         mobileMenu.querySelectorAll("a").forEach(link => {
             link.addEventListener("click", () => {
                 mobileMenu.classList.remove("active");
+                menuBtn.classList.remove("active");
             });
         });
     }
 
 
     /* =====================================================
-       CUSTOM CURSOR
-    ===================================================== */
-
-    const cursorDot = document.querySelector(".cursor-dot");
-    const cursorRing = document.querySelector(".cursor-ring");
-
-    if (cursorDot && cursorRing && window.innerWidth > 650) {
-
-        let mouseX = 0;
-        let mouseY = 0;
-
-        let ringX = 0;
-        let ringY = 0;
-
-        document.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            cursorDot.style.left = `${mouseX}px`;
-            cursorDot.style.top = `${mouseY}px`;
-        });
-
-        function animateCursor() {
-
-            ringX += (mouseX - ringX) * 0.12;
-            ringY += (mouseY - ringY) * 0.12;
-
-            cursorRing.style.left = `${ringX}px`;
-            cursorRing.style.top = `${ringY}px`;
-
-            requestAnimationFrame(animateCursor);
-        }
-
-        animateCursor();
-    }
-
-
-    /* =====================================================
-       SMOOTH ANCHOR SCROLL
+       SMOOTH NAVIGATION
     ===================================================== */
 
     document.querySelectorAll('a[href^="#"]').forEach(link => {
 
-        link.addEventListener("click", (e) => {
+        link.addEventListener("click", function (e) {
 
-            const targetId = link.getAttribute("href");
+            const targetId = this.getAttribute("href");
 
             if (!targetId || targetId === "#") return;
 
             const target = document.querySelector(targetId);
 
-            if (target) {
-                e.preventDefault();
+            if (!target) return;
 
-                target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            }
+            e.preventDefault();
 
+            const navbarHeight = 80;
+
+            const targetPosition =
+                target.getBoundingClientRect().top +
+                window.scrollY -
+                navbarHeight;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: "smooth"
+            });
         });
 
     });
@@ -113,73 +86,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!navbar) return;
 
-        if (window.scrollY > 60) {
+        if (window.scrollY > 50) {
 
             navbar.style.background =
-                "rgba(3, 13, 19, 0.82)";
+                "rgba(3, 16, 21, 0.82)";
 
-            navbar.style.borderBottomColor =
-                "rgba(88, 217, 255, 0.10)";
+            navbar.style.boxShadow =
+                "0 10px 40px rgba(0,0,0,0.18)";
 
         } else {
 
             navbar.style.background =
-                "rgba(3, 13, 19, 0.45)";
+                "rgba(3, 16, 21, 0.48)";
 
-            navbar.style.borderBottomColor =
-                "rgba(255,255,255,0.05)";
+            navbar.style.boxShadow = "none";
         }
 
     });
 
 
     /* =====================================================
-       REVEAL ANIMATION
+       REVEAL ANIMATIONS
     ===================================================== */
 
     const revealElements =
         document.querySelectorAll(".reveal");
 
-    if ("IntersectionObserver" in window) {
+    const revealObserver =
+        new IntersectionObserver(
+            (entries, observer) => {
 
-        const revealObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
+                entries.forEach(entry => {
 
-                    entries.forEach(entry => {
+                    if (entry.isIntersecting) {
 
-                        if (entry.isIntersecting) {
+                        entry.target.style.opacity = "1";
 
-                            entry.target.style.transition =
-                                "opacity 0.9s ease, transform 0.9s cubic-bezier(.2,.7,.2,1)";
+                        entry.target.style.transform =
+                            "translateY(0)";
 
-                            entry.target.style.opacity = "1";
-                            entry.target.style.transform =
-                                "translateY(0)";
+                        observer.unobserve(entry.target);
+                    }
 
-                            observer.unobserve(entry.target);
-                        }
+                });
 
-                    });
+            },
+            {
+                threshold: 0.12
+            }
+        );
 
-                },
-                {
-                    threshold: 0.12
-                }
-            );
-
-        revealElements.forEach(element => {
-            revealObserver.observe(element);
-        });
-
-    } else {
-
-        revealElements.forEach(element => {
-            element.style.opacity = "1";
-            element.style.transform = "translateY(0)";
-        });
-
-    }
+    revealElements.forEach(element => {
+        revealObserver.observe(element);
+    });
 
 
     /* =====================================================
@@ -189,229 +148,143 @@ document.addEventListener("DOMContentLoaded", () => {
     const counters =
         document.querySelectorAll("[data-counter]");
 
-    const animateCounter = (element) => {
+    const counterObserver =
+        new IntersectionObserver(
+            (entries, observer) => {
 
-        const target =
-            parseInt(element.dataset.counter, 10);
+                entries.forEach(entry => {
 
-        if (isNaN(target)) return;
+                    if (!entry.isIntersecting) return;
 
-        let current = 0;
+                    const counter = entry.target;
 
-        const duration = 1600;
-        const startTime = performance.now();
+                    const target =
+                        Number(counter.dataset.counter);
 
-        function updateCounter(time) {
+                    let current = 0;
 
-            const progress =
-                Math.min((time - startTime) / duration, 1);
+                    const duration = 1600;
 
-            const eased =
-                1 - Math.pow(1 - progress, 3);
+                    const startTime = performance.now();
 
-            current =
-                Math.floor(target * eased);
+                    function updateCounter(currentTime) {
 
-            element.textContent =
-                current.toLocaleString();
-
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent =
-                    target.toLocaleString();
-            }
-
-        }
-
-        requestAnimationFrame(updateCounter);
-    };
-
-
-    if ("IntersectionObserver" in window) {
-
-        const counterObserver =
-            new IntersectionObserver(
-                (entries, observer) => {
-
-                    entries.forEach(entry => {
-
-                        if (entry.isIntersecting) {
-
-                            animateCounter(entry.target);
-
-                            observer.unobserve(
-                                entry.target
+                        const progress =
+                            Math.min(
+                                (currentTime - startTime) /
+                                duration,
+                                1
                             );
+
+                        const eased =
+                            1 -
+                            Math.pow(
+                                1 - progress,
+                                3
+                            );
+
+                        current =
+                            Math.floor(
+                                target * eased
+                            );
+
+                        counter.textContent = current;
+
+                        if (progress < 1) {
+
+                            requestAnimationFrame(
+                                updateCounter
+                            );
+
+                        } else {
+
+                            counter.textContent =
+                                target;
                         }
+                    }
 
-                    });
+                    requestAnimationFrame(
+                        updateCounter
+                    );
 
-                },
-                {
-                    threshold: 0.7
-                }
-            );
+                    observer.unobserve(counter);
+                });
 
-        counters.forEach(counter => {
-            counterObserver.observe(counter);
-        });
-
-    } else {
-
-        counters.forEach(counter => {
-            animateCounter(counter);
-        });
-
-    }
-
-
-    /* =====================================================
-       TREATMENT HOVER EFFECT
-    ===================================================== */
-
-    const treatmentItems =
-        document.querySelectorAll(".treatment-item");
-
-    treatmentItems.forEach(item => {
-
-        item.addEventListener("mouseenter", () => {
-
-            item.style.paddingLeft = "18px";
-
-        });
-
-        item.addEventListener("mouseleave", () => {
-
-            item.style.paddingLeft = "0";
-
-        });
-
-    });
-
-
-    /* =====================================================
-       3D CARD TILT
-    ===================================================== */
-
-    const tiltCards =
-        document.querySelectorAll(
-            ".technology-card, .mini-card, .doctor-card, .appointment-form"
+            },
+            {
+                threshold: 0.6
+            }
         );
 
-    tiltCards.forEach(card => {
-
-        card.addEventListener("mousemove", (e) => {
-
-            if (window.innerWidth < 800) return;
-
-            const rect =
-                card.getBoundingClientRect();
-
-            const x =
-                e.clientX - rect.left;
-
-            const y =
-                e.clientY - rect.top;
-
-            const centerX =
-                rect.width / 2;
-
-            const centerY =
-                rect.height / 2;
-
-            const rotateX =
-                ((y - centerY) / centerY) * -4;
-
-            const rotateY =
-                ((x - centerX) / centerX) * 4;
-
-            card.style.transform =
-                `perspective(900px)
-                 rotateX(${rotateX}deg)
-                 rotateY(${rotateY}deg)
-                 translateY(-5px)`;
-
-        });
-
-        card.addEventListener("mouseleave", () => {
-
-            card.style.transform =
-                "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
-
-        });
-
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
     });
 
 
     /* =====================================================
-       MAGNETIC BUTTONS
-    ===================================================== */
-
-    const magneticButtons =
-        document.querySelectorAll(
-            ".primary-btn, .outline-btn, .form-submit"
-        );
-
-    magneticButtons.forEach(button => {
-
-        button.addEventListener("mousemove", (e) => {
-
-            if (window.innerWidth < 800) return;
-
-            const rect =
-                button.getBoundingClientRect();
-
-            const x =
-                e.clientX - rect.left - rect.width / 2;
-
-            const y =
-                e.clientY - rect.top - rect.height / 2;
-
-            button.style.transform =
-                `translate(${x * 0.08}px, ${y * 0.08}px)`;
-
-        });
-
-        button.addEventListener("mouseleave", () => {
-
-            button.style.transform =
-                "translate(0,0)";
-
-        });
-
-    });
-
-
-    /* =====================================================
-       HERO PARALLAX
+       HERO 3D MOUSE PARALLAX
     ===================================================== */
 
     const heroVisual =
         document.querySelector(".hero-visual");
 
-    if (heroVisual) {
+    const heroTooth =
+        document.querySelector(".hero-tooth");
 
-        document.addEventListener("mousemove", (e) => {
+    if (
+        heroVisual &&
+        heroTooth &&
+        window.innerWidth > 800
+    ) {
 
-            if (window.innerWidth < 800) return;
+        heroVisual.addEventListener(
+            "mousemove",
+            e => {
 
-            const x =
-                (e.clientX / window.innerWidth - 0.5);
+                const rect =
+                    heroVisual.getBoundingClientRect();
 
-            const y =
-                (e.clientY / window.innerHeight - 0.5);
+                const x =
+                    e.clientX - rect.left;
 
-            heroVisual.style.transform =
-                `translate3d(${x * 12}px, ${y * 12}px, 0)`;
+                const y =
+                    e.clientY - rect.top;
 
-        });
+                const centerX =
+                    rect.width / 2;
 
+                const centerY =
+                    rect.height / 2;
+
+                const rotateY =
+                    ((x - centerX) /
+                        centerX) * 10;
+
+                const rotateX =
+                    ((centerY - y) /
+                        centerY) * 8;
+
+                heroTooth.style.transform =
+                    `perspective(900px)
+                     rotateX(${rotateX}deg)
+                     rotateY(${rotateY - 10}deg)
+                     translateY(-5px)`;
+            }
+        );
+
+        heroVisual.addEventListener(
+            "mouseleave",
+            () => {
+
+                heroTooth.style.transform =
+                    "perspective(900px) rotateX(8deg) rotateY(-12deg)";
+            }
+        );
     }
 
 
     /* =====================================================
-       ANATOMY INTERACTION
+       ANATOMY 3D INTERACTION
     ===================================================== */
 
     const anatomyVisual =
@@ -420,44 +293,291 @@ document.addEventListener("DOMContentLoaded", () => {
     const anatomyTooth =
         document.querySelector(".anatomy-tooth");
 
-    if (anatomyVisual && anatomyTooth) {
+    if (
+        anatomyVisual &&
+        anatomyTooth &&
+        window.innerWidth > 800
+    ) {
 
-        anatomyVisual.addEventListener("mousemove", (e) => {
+        anatomyVisual.addEventListener(
+            "mousemove",
+            e => {
 
-            if (window.innerWidth < 800) return;
+                const rect =
+                    anatomyVisual.getBoundingClientRect();
 
-            const rect =
-                anatomyVisual.getBoundingClientRect();
+                const x =
+                    e.clientX - rect.left;
 
-            const x =
-                (e.clientX - rect.left) / rect.width;
+                const y =
+                    e.clientY - rect.top;
 
-            const y =
-                (e.clientY - rect.top) / rect.height;
+                const rotateY =
+                    ((x - rect.width / 2) /
+                        rect.width) * 25;
 
-            const rotateY =
-                (x - 0.5) * 30;
+                const rotateX =
+                    ((rect.height / 2 - y) /
+                        rect.height) * 15;
 
-            const rotateX =
-                (y - 0.5) * -20;
+                anatomyTooth.style.animation =
+                    "none";
 
-            anatomyTooth.style.animation =
-                "none";
+                anatomyTooth.style.transform =
+                    `perspective(900px)
+                     rotateX(${rotateX}deg)
+                     rotateY(${rotateY}deg)`;
+            }
+        );
 
-            anatomyTooth.style.transform =
-                `rotateX(${rotateX}deg)
-                 rotateY(${rotateY}deg)`;
+        anatomyVisual.addEventListener(
+            "mouseleave",
+            () => {
 
-        });
+                anatomyTooth.style.animation =
+                    "anatomyRotate 15s linear infinite";
 
-        anatomyVisual.addEventListener("mouseleave", () => {
+                anatomyTooth.style.transform = "";
+            }
+        );
+    }
 
-            anatomyTooth.style.animation =
-                "anatomyRotate 15s linear infinite";
 
-        });
+    /* =====================================================
+       MAGNETIC BUTTONS
+    ===================================================== */
+
+    const magneticButtons =
+        document.querySelectorAll(
+            ".primary-btn, .outline-btn, .nav-cta"
+        );
+
+    magneticButtons.forEach(button => {
+
+        button.addEventListener(
+            "mousemove",
+            e => {
+
+                if (window.innerWidth <= 800)
+                    return;
+
+                const rect =
+                    button.getBoundingClientRect();
+
+                const x =
+                    e.clientX -
+                    rect.left -
+                    rect.width / 2;
+
+                const y =
+                    e.clientY -
+                    rect.top -
+                    rect.height / 2;
+
+                button.style.transform =
+                    `translate(${x * 0.15}px,
+                               ${y * 0.15}px)`;
+            }
+        );
+
+        button.addEventListener(
+            "mouseleave",
+            () => {
+
+                button.style.transform =
+                    "";
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       CUSTOM CURSOR
+    ===================================================== */
+
+    const cursorDot =
+        document.querySelector(".cursor-dot");
+
+    const cursorRing =
+        document.querySelector(".cursor-ring");
+
+    if (
+        cursorDot &&
+        cursorRing &&
+        window.innerWidth > 800
+    ) {
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        let ringX = 0;
+        let ringY = 0;
+
+        document.addEventListener(
+            "mousemove",
+            e => {
+
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+
+                cursorDot.style.left =
+                    `${mouseX}px`;
+
+                cursorDot.style.top =
+                    `${mouseY}px`;
+            }
+        );
+
+        function animateCursor() {
+
+            ringX +=
+                (mouseX - ringX) * 0.14;
+
+            ringY +=
+                (mouseY - ringY) * 0.14;
+
+            cursorRing.style.left =
+                `${ringX}px`;
+
+            cursorRing.style.top =
+                `${ringY}px`;
+
+            requestAnimationFrame(
+                animateCursor
+            );
+        }
+
+        animateCursor();
+
+
+        document
+            .querySelectorAll("a, button")
+            .forEach(element => {
+
+                element.addEventListener(
+                    "mouseenter",
+                    () => {
+
+                        cursorRing.style.width =
+                            "45px";
+
+                        cursorRing.style.height =
+                            "45px";
+                    }
+                );
+
+                element.addEventListener(
+                    "mouseleave",
+                    () => {
+
+                        cursorRing.style.width =
+                            "30px";
+
+                        cursorRing.style.height =
+                            "30px";
+                    }
+                );
+
+            });
 
     }
+
+
+    /* =====================================================
+       TREATMENT HOVER
+    ===================================================== */
+
+    const treatmentItems =
+        document.querySelectorAll(
+            ".treatment-item"
+        );
+
+    treatmentItems.forEach(item => {
+
+        item.addEventListener(
+            "mouseenter",
+            () => {
+
+                treatmentItems.forEach(other => {
+
+                    if (other !== item) {
+                        other.style.opacity =
+                            "0.42";
+                    }
+
+                });
+            }
+        );
+
+        item.addEventListener(
+            "mouseleave",
+            () => {
+
+                treatmentItems.forEach(other => {
+
+                    other.style.opacity =
+                        "1";
+                });
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       CARD TILT
+    ===================================================== */
+
+    const cards =
+        document.querySelectorAll(
+            ".technology-card, .mini-card"
+        );
+
+    cards.forEach(card => {
+
+        card.addEventListener(
+            "mousemove",
+            e => {
+
+                if (window.innerWidth <= 800)
+                    return;
+
+                const rect =
+                    card.getBoundingClientRect();
+
+                const x =
+                    e.clientX - rect.left;
+
+                const y =
+                    e.clientY - rect.top;
+
+                const rotateY =
+                    ((x - rect.width / 2) /
+                        rect.width) * 5;
+
+                const rotateX =
+                    ((rect.height / 2 - y) /
+                        rect.height) * 5;
+
+                card.style.transform =
+                    `perspective(900px)
+                     rotateX(${rotateX}deg)
+                     rotateY(${rotateY}deg)
+                     translateY(-6px)`;
+            }
+        );
+
+        card.addEventListener(
+            "mouseleave",
+            () => {
+
+                card.style.transform =
+                    "";
+            }
+        );
+
+    });
 
 
     /* =====================================================
@@ -465,365 +585,162 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================================== */
 
     const appointmentForm =
-        document.querySelector(".appointment-form");
+        document.querySelector(
+            ".appointment-form"
+        );
 
     if (appointmentForm) {
 
-        appointmentForm.addEventListener("submit", (e) => {
+        appointmentForm.addEventListener(
+            "submit",
+            e => {
 
-            e.preventDefault();
+                e.preventDefault();
 
-            const submitButton =
-                appointmentForm.querySelector(".form-submit");
+                const submitButton =
+                    appointmentForm.querySelector(
+                        ".form-submit"
+                    );
 
-            if (!submitButton) return;
+                if (!submitButton) return;
 
-            const originalHTML =
-                submitButton.innerHTML;
-
-            submitButton.innerHTML =
-                "✓ REQUEST RECEIVED";
-
-            submitButton.style.background =
-                "linear-gradient(100deg,#73f4c5,#49cda5)";
-
-            submitButton.style.color =
-                "#001610";
-
-            setTimeout(() => {
+                const originalText =
+                    submitButton.innerHTML;
 
                 submitButton.innerHTML =
-                    originalHTML;
+                    "✓ Request Received";
 
                 submitButton.style.background =
-                    "";
+                    "linear-gradient(100deg,#72efc5,#62dcff)";
 
-                submitButton.style.color =
-                    "";
+                submitButton.disabled = true;
 
-            }, 3000);
+                setTimeout(() => {
 
-            appointmentForm.reset();
+                    appointmentForm.reset();
 
-        });
+                    submitButton.innerHTML =
+                        originalText;
 
+                    submitButton.disabled =
+                        false;
+
+                }, 3000);
+
+            }
+        );
     }
 
 
     /* =====================================================
-       SCROLL PROGRESS
+       PARALLAX BACKGROUND
     ===================================================== */
 
-    const progressBar =
-        document.createElement("div");
+    const heroGrid =
+        document.querySelector(".hero-grid");
 
-    progressBar.style.position = "fixed";
-    progressBar.style.top = "0";
-    progressBar.style.left = "0";
-    progressBar.style.height = "2px";
-    progressBar.style.width = "0%";
-    progressBar.style.background =
-        "linear-gradient(90deg,#58d9ff,#73f4c5)";
-    progressBar.style.zIndex = "10001";
-    progressBar.style.pointerEvents = "none";
+    window.addEventListener(
+        "scroll",
+        () => {
 
-    document.body.appendChild(progressBar);
+            if (!heroGrid) return;
 
-    window.addEventListener("scroll", () => {
+            const scrollY =
+                window.scrollY;
 
-        const scrollTop =
-            window.scrollY;
-
-        const documentHeight =
-            document.documentElement.scrollHeight -
-            window.innerHeight;
-
-        const percentage =
-            documentHeight > 0
-                ? (scrollTop / documentHeight) * 100
-                : 0;
-
-        progressBar.style.width =
-            `${percentage}%`;
-
-    });
+            heroGrid.style.transform =
+                `translateY(${scrollY * 0.12}px)`;
+        },
+        {
+            passive: true
+        }
+    );
 
 
     /* =====================================================
-       3D PARTICLE SYSTEM — THREE.JS
+       MARQUEE PAUSE
     ===================================================== */
 
-    const canvas =
-        document.querySelector("#three-canvas");
+    const marquee =
+        document.querySelector(".marquee-track");
 
-    if (canvas && typeof THREE !== "undefined") {
+    if (marquee) {
 
-        const scene = new THREE.Scene();
-
-        const camera =
-            new THREE.PerspectiveCamera(
-                60,
-                window.innerWidth / window.innerHeight,
-                0.1,
-                100
-            );
-
-        camera.position.z = 8;
-
-        const renderer =
-            new THREE.WebGLRenderer({
-                canvas: canvas,
-                alpha: true,
-                antialias: true
-            });
-
-        renderer.setPixelRatio(
-            Math.min(window.devicePixelRatio, 2)
-        );
-
-        renderer.setSize(
-            window.innerWidth,
-            window.innerHeight
-        );
-
-
-        /* ---------------------------------------------
-           PARTICLES
-        --------------------------------------------- */
-
-        const particleCount = 650;
-
-        const positions =
-            new Float32Array(
-                particleCount * 3
-            );
-
-        for (let i = 0; i < particleCount; i++) {
-
-            const radius =
-                5 + Math.random() * 8;
-
-            const angle =
-                Math.random() * Math.PI * 2;
-
-            const height =
-                (Math.random() - 0.5) * 8;
-
-            positions[i * 3] =
-                Math.cos(angle) * radius;
-
-            positions[i * 3 + 1] =
-                height;
-
-            positions[i * 3 + 2] =
-                Math.sin(angle) * radius;
-
-        }
-
-        const particleGeometry =
-            new THREE.BufferGeometry();
-
-        particleGeometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(
-                positions,
-                3
-            )
-        );
-
-
-        const particleMaterial =
-            new THREE.PointsMaterial({
-                color: 0x58d9ff,
-                size: 0.025,
-                transparent: true,
-                opacity: 0.55,
-                depthWrite: false
-            });
-
-
-        const particles =
-            new THREE.Points(
-                particleGeometry,
-                particleMaterial
-            );
-
-        scene.add(particles);
-
-
-        /* ---------------------------------------------
-           CENTRAL DNA / MEDICAL RING
-        --------------------------------------------- */
-
-        const ringGeometry =
-            new THREE.TorusGeometry(
-                2.2,
-                0.006,
-                16,
-                120
-            );
-
-        const ringMaterial =
-            new THREE.MeshBasicMaterial({
-                color: 0x58d9ff,
-                transparent: true,
-                opacity: 0.18
-            });
-
-        const ring =
-            new THREE.Mesh(
-                ringGeometry,
-                ringMaterial
-            );
-
-        ring.rotation.x =
-            Math.PI / 2;
-
-        scene.add(ring);
-
-
-        /* ---------------------------------------------
-           SECOND RING
-        --------------------------------------------- */
-
-        const ringGeometry2 =
-            new THREE.TorusGeometry(
-                3.1,
-                0.004,
-                16,
-                120
-            );
-
-        const ring2 =
-            new THREE.Mesh(
-                ringGeometry2,
-                ringMaterial.clone()
-            );
-
-        ring2.rotation.x =
-            Math.PI / 3;
-
-        ring2.rotation.y =
-            Math.PI / 5;
-
-        scene.add(ring2);
-
-
-        /* ---------------------------------------------
-           MOUSE MOVEMENT
-        --------------------------------------------- */
-
-        let mouseX = 0;
-        let mouseY = 0;
-
-        document.addEventListener(
-            "mousemove",
-            (event) => {
-
-                mouseX =
-                    (event.clientX /
-                        window.innerWidth) *
-                        2 - 1;
-
-                mouseY =
-                    (event.clientY /
-                        window.innerHeight) *
-                        2 - 1;
-
-            }
-        );
-
-
-        /* ---------------------------------------------
-           ANIMATION LOOP
-        --------------------------------------------- */
-
-        const clock =
-            new THREE.Clock();
-
-        function animate() {
-
-            requestAnimationFrame(animate);
-
-            const elapsed =
-                clock.getElapsedTime();
-
-            particles.rotation.y =
-                elapsed * 0.025;
-
-            particles.rotation.x =
-                Math.sin(elapsed * 0.15) * 0.05;
-
-            ring.rotation.z =
-                elapsed * 0.08;
-
-            ring2.rotation.z =
-                -elapsed * 0.055;
-
-            camera.position.x +=
-                (mouseX * 0.25 -
-                    camera.position.x) * 0.02;
-
-            camera.position.y +=
-                (-mouseY * 0.18 -
-                    camera.position.y) * 0.02;
-
-            camera.lookAt(0, 0, 0);
-
-            renderer.render(
-                scene,
-                camera
-            );
-
-        }
-
-        animate();
-
-
-        /* ---------------------------------------------
-           RESIZE
-        --------------------------------------------- */
-
-        window.addEventListener(
-            "resize",
+        marquee.addEventListener(
+            "mouseenter",
             () => {
-
-                camera.aspect =
-                    window.innerWidth /
-                    window.innerHeight;
-
-                camera.updateProjectionMatrix();
-
-                renderer.setSize(
-                    window.innerWidth,
-                    window.innerHeight
-                );
-
-                renderer.setPixelRatio(
-                    Math.min(
-                        window.devicePixelRatio,
-                        2
-                    )
-                );
-
+                marquee.style.animationPlayState =
+                    "paused";
             }
         );
 
+        marquee.addEventListener(
+            "mouseleave",
+            () => {
+                marquee.style.animationPlayState =
+                    "running";
+            }
+        );
     }
 
 
     /* =====================================================
-       CURRENT YEAR
+       DATE MINIMUM FOR APPOINTMENT
     ===================================================== */
 
-    document.querySelectorAll(
-        "[data-year]"
-    ).forEach(element => {
+    const dateInput =
+        document.querySelector(
+            'input[type="date"]'
+        );
 
-        element.textContent =
-            new Date().getFullYear();
+    if (dateInput) {
 
-    });
+        const today =
+            new Date();
+
+        const year =
+            today.getFullYear();
+
+        const month =
+            String(
+                today.getMonth() + 1
+            ).padStart(2, "0");
+
+        const day =
+            String(
+                today.getDate()
+            ).padStart(2, "0");
+
+        dateInput.min =
+            `${year}-${month}-${day}`;
+    }
+
+
+    /* =====================================================
+       REDUCE MOTION ACCESSIBILITY
+    ===================================================== */
+
+    const reduceMotion =
+        window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        );
+
+    if (reduceMotion.matches) {
+
+        document
+            .querySelectorAll("*")
+            .forEach(element => {
+
+                element.style.animationDuration =
+                    "0.01ms";
+
+                element.style.animationIterationCount =
+                    "1";
+
+                element.style.scrollBehavior =
+                    "auto";
+            });
+    }
 
 
     /* =====================================================
@@ -832,12 +749,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(
         "%c DENTOVA ",
-        "color:#58d9ff;font-size:24px;font-weight:bold;"
+        "background:#62dcff;color:#031015;font-size:18px;font-weight:bold;padding:8px 14px;border-radius:8px;"
     );
 
     console.log(
-        "%c Advanced Dental Experience",
-        "color:#91a9b5;font-size:12px;"
+        "%c Premium Dental Experience Loaded",
+        "color:#72efc5;font-size:12px;"
     );
 
 });
